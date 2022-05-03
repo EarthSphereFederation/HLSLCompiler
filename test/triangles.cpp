@@ -1,3 +1,5 @@
+#include "HLSLCompiler/Compiler.h"
+
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 
@@ -23,7 +25,11 @@ const std::vector<const char*> validationLayers = {
 };
 
 const std::vector<const char*> deviceExtensions = {
-        VK_KHR_SWAPCHAIN_EXTENSION_NAME
+        VK_KHR_SWAPCHAIN_EXTENSION_NAME,
+
+//        VK_KHR_BUFFER_DEVICE_ADDRESS_EXTENSION_NAME,
+//        VK_KHR_DEFERRED_HOST_OPERATIONS_EXTENSION_NAME,
+//        VK_KHR_MAINTENANCE3_EXTENSION_NAME,
 };
 
 #ifdef NDEBUG
@@ -217,7 +223,7 @@ private:
         appInfo.applicationVersion = VK_MAKE_VERSION(1, 0, 0);
         appInfo.pEngineName = "No Engine";
         appInfo.engineVersion = VK_MAKE_VERSION(1, 0, 0);
-        appInfo.apiVersion = VK_API_VERSION_1_0;
+        appInfo.apiVersion = VK_API_VERSION_1_3;
 
         VkInstanceCreateInfo createInfo{};
         createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
@@ -456,8 +462,14 @@ private:
     }
 
     void createGraphicsPipeline() {
-        auto vertShaderCode = readFile("shaders/vert.spv");
-        auto fragShaderCode = readFile("shaders/frag.spv");
+        ShaderDesc vs_desc = { ASSETS_PATH"shaders/Triangle/Shader.hlsl", "mainVS", EShaderType::kVertex, EShaderFeatureLevel::k6_5 };
+        ShaderDesc ps_desc = { ASSETS_PATH"shaders/Triangle/Shader.hlsl", "mainPS", EShaderType::kPixel, EShaderFeatureLevel::k6_5 };
+
+//        auto vertShaderCode = readFile("shaders/vert.spv");
+//        auto fragShaderCode = readFile("shaders/frag.spv");
+
+        auto vertShaderCode = Compile(vs_desc, EShaderBlobType::kSPIRV);
+        auto fragShaderCode = Compile(ps_desc, EShaderBlobType::kSPIRV);
 
         VkShaderModule vertShaderModule = createShaderModule(vertShaderCode);
         VkShaderModule fragShaderModule = createShaderModule(fragShaderCode);
@@ -732,7 +744,7 @@ private:
         currentFrame = (currentFrame + 1) % MAX_FRAMES_IN_FLIGHT;
     }
 
-    VkShaderModule createShaderModule(const std::vector<char>& code) {
+    VkShaderModule createShaderModule(const std::vector<uint8_t>& code) {
         VkShaderModuleCreateInfo createInfo{};
         createInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
         createInfo.codeSize = code.size();

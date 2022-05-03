@@ -100,15 +100,15 @@ std::vector<uint8_t> Compile(const ShaderDesc& shader, EShaderBlobType blob_type
     if (blob_type == EShaderBlobType::kSPIRV)
     {
         arguments.emplace_back(L"-spirv");
-        arguments.emplace_back(L"-fspv-target-env=vulkan1.2");
+        arguments.emplace_back(L"-fspv-target-env=vulkan1.3");
         arguments.emplace_back(L"-fspv-extension=KHR");
-        arguments.emplace_back(L"-fspv-extension=SPV_NV_mesh_shader");
-        arguments.emplace_back(L"-fspv-extension=SPV_EXT_descriptor_indexing");
-        arguments.emplace_back(L"-fspv-extension=SPV_EXT_shader_viewport_index_layer");
-        arguments.emplace_back(L"-fspv-extension=SPV_GOOGLE_hlsl_functionality1");
-        arguments.emplace_back(L"-fspv-extension=SPV_GOOGLE_user_type");
-        arguments.emplace_back(L"-fvk-use-dx-layout");
-        arguments.emplace_back(L"-fspv-reflect");
+//        arguments.emplace_back(L"-fspv-extension=SPV_NV_mesh_shader");
+//        arguments.emplace_back(L"-fspv-extension=SPV_EXT_descriptor_indexing");
+//        arguments.emplace_back(L"-fspv-extension=SPV_EXT_shader_viewport_index_layer");
+//        arguments.emplace_back(L"-fspv-extension=SPV_GOOGLE_hlsl_functionality1");
+//        arguments.emplace_back(L"-fspv-extension=SPV_GOOGLE_user_type");
+//        arguments.emplace_back(L"-fvk-use-dx-layout");
+//        arguments.emplace_back(L"-fspv-reflect");
         space = static_cast<uint32_t>(shader.type);
     }
 
