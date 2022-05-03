@@ -7,8 +7,8 @@
 
 int main()
 {
-    ShaderDesc vs_desc = { ASSETS_PATH"shaders/Triangle/Shader.hlsl", "mainVS", EShaderType::kVertex, "6_5" };
-    ShaderDesc ps_desc = { ASSETS_PATH"shaders/Triangle/Shader.hlsl", "mainPS", EShaderType::kPixel, "6_5" };
+    ShaderDesc vs_desc = { ASSETS_PATH"shaders/Triangle/Shader.hlsl", "mainVS", EShaderType::kVertex, EShaderFeatureLevel::k6_5 };
+    ShaderDesc ps_desc = { ASSETS_PATH"shaders/Triangle/Shader.hlsl", "mainPS", EShaderType::kPixel, EShaderFeatureLevel::k6_5 };
 
     std::vector<uint8_t> vs_spv = Compile(vs_desc, EShaderBlobType::kSPIRV);
     std::vector<uint8_t> ps_spv = Compile(ps_desc, EShaderBlobType::kSPIRV);
